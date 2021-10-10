@@ -1,6 +1,7 @@
 "use strict";
 const electron = require("electron");
 const path = require("path");
+const { ipcMain } = require("electron");
 import { app, protocol, BrowserWindow } from "electron";
 import {
   createProtocol
@@ -24,8 +25,12 @@ protocol.registerSchemesAsPrivileged([
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 502,
+    height: 376,
+    autoHideMenuBar: true,
+    frame: false,
+    // resizable: false,
+    // titleBarStyle: "hidden",
     webPreferences: {
       nodeIntegration: true,
       // 通过preload让渲染进程拥有使用node模块的能力
@@ -65,7 +70,13 @@ app.on("activate", () => {
     createWindow();
   }
 });
-
+ipcMain.on("close", () => {
+  win.close();
+  app.quit();
+});
+ipcMain.on("minimize", () => {
+  win.minimize();
+});
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
