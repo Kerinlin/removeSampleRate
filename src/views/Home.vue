@@ -32,6 +32,7 @@ const fs = window.fs;
 const fsp = fs.promises;
 const { Readable } = window.stream;
 const musicMetadata = require("music-metadata-browser");
+const { shell } = window.require("electron");
 export default {
   name: "home",
   data() {
@@ -119,6 +120,7 @@ export default {
       let timer = setTimeout(async () => {
         await this.startDelete(dirPath);
         this.loading = false;
+        shell.showItemInFolder(dirpath);
         clearTimeout(timer);
       }, 1000);
     }
